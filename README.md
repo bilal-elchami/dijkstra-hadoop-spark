@@ -6,5 +6,11 @@ The project has a double purpose. First get familiar with Dijkstra’s algorithm
 Provide both a Python-Hadoop streaming and Spark implementation of the algorithm, and test it on the simple graph data provided in classes.
 Optional: perform scalability experiments as for previous projects. A single comparison on a reasonable big graph would be sufficient
 
+# Useful links for implementation
 https://github.com/sjtu-iiot/graphx-algorithm/blob/master/src/main/scala/org/apache/spark/graphx/iiot/shortestpath/Dijkstra.scala
+
 http://www.baeldung.com/java-dijkstra
+
+https://github.com/minfo2015/dijkstraMapreduce/blob/master/src/com/hadoop/dijkstra/DijkstraMapper.java
+
+https://github.com/theogenes/DijkstraShortestPathImplementationOnHadoop/blob/master/src
