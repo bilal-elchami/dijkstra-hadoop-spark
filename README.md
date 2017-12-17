@@ -6,6 +6,9 @@ The project has a double purpose. First get familiar with Dijkstra’s algorithm
 Provide both a Python-Hadoop streaming and Spark implementation of the algorithm, and test it on the simple graph data provided in classes.
 Optional: perform scalability experiments as for previous projects. A single comparison on a reasonable big graph would be sufficient
 
+### To initialize data from the old version with 1 being the start node
+cat data/input-old.dat | sort | python/prepare.py 1
+
 ### Runing a simple MapReduce using Python
 cat data/input.dat | python/mapper.py | sort | python/reducer.py
 
