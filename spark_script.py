@@ -7,7 +7,6 @@ def splitInput(row):
 	currentSourceNode, targetNode, distance = row.split('\t')
 	return (currentSourceNode, targetNode, float(distance))
 
-
 data = textFile.map(lambda row: splitInput(row))
 #data.collect()
 
