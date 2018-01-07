@@ -1,3 +1,4 @@
 derby.log
 metastore_db/*
 output/*
+pyspark.sh
