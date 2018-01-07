@@ -1,4 +1,4 @@
-# Project of a course of Big Data for our Masters in Computer Science in the finance at Dauphine University
+# Project of a course of Big Data for our Masters in Computer Science in the finance at Paris-Dauphine University
 
 ### Single-source shortest path problem
 The task is to find shortest paths from a source node to all other nodes in the graph. This problem is solved by the Dijkstra’s algorithm, which is sequential.
