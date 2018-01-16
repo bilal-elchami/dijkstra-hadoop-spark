@@ -1,5 +1,7 @@
 # Project of a course of Big Data for our Masters in Computer Science in the finance at Paris-Dauphine University
 
+test by badr 
+
 ### Single-source shortest path problem
 The task is to find shortest paths from a source node to all other nodes in the graph. This problem is solved by the Dijkstra’s algorithm, which is sequential.
 The project has a double purpose. First get familiar with Dijkstra’s algorithm, then devise a MapReduce version of the algorithm. As you will realise, the process is actually iterative, so the identified MapReduce job must be iterated a certain number of times.
