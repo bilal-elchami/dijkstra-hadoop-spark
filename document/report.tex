@@ -1,0 +1,84 @@
+\documentclass[english]{article}
+ 
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{babel}
+\usepackage{advdate}
+\usepackage{graphicx} 
+\usepackage{amsmath} 
+
+\begin{document}
+
+\begin{titlepage}
+\SetDate[30/01/2018]
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\center 
+\textsc{\LARGE Universite Paris Dauphine}\\[1.5cm] 
+\textsc{\Large Big Data}\\[0.5cm]
+\HRule \\[0.4cm] { \huge \bfseries
+Single-source shortest path - Djikstra Algorithm}\\[0.4cm] \HRule \\[1.5cm]
+\begin{minipage}{0.4\textwidth}
+	\begin{flushleft} \large
+		\emph{Students}
+		\\ Elie \textsc{Abi Hanna Daher}
+		\\ Bilal \textsc{El Chami}
+		\\ Badr \textsc{Erraji}
+	\end{flushleft}
+\end{minipage}
+~
+\begin{minipage}{0.4\textwidth}
+	\begin{flushright} \large
+		\emph{Professor} 
+		\\ Mr Dario  \textsc{Colazzo}
+		\\  \hspace{1cm}
+		\\  \hspace{1cm}
+	\end{flushright}
+\end{minipage}\\[2cm]
+{\large \today}\\[2cm]
+\includegraphics[width=8cm]{img/dauphine.png}
+\vfill
+\end{titlepage}
+ 
+\tableofcontents 
+\newpage
+
+\section{Project goal}
+The goal of the project is to find the shortest paths from a source node to all other nodes in the graph using the Dijkstra’s algorithm. The algorithm should be implemented in both Python-Hadoop and Spark. \\
+
+A long side the implementation, a scalability experiments is needed to check the performance of the algorithm implemented.
+
+\section{Dijkstra Algorithm}
+The Dijkstra’s algorithm finds the shortest path from source to all other nodes. Technically the dijkstra algortihm is very similar to the BFS, but instead of having 
+
+\section{Implementation}
+
+\subsection{Input}
+
+\subsubsection{Data}
+\subsubsection{Prepare}
+
+\subsection{Mapper}
+
+\subsection{Reduce}
+
+\subsection{Job Chaining}
+
+\section{Results}
+
+\subsection{Hadoop}
+
+\subsection{Spark}
+
+\section{Performance}
+
+\newpage
+
+\begin{thebibliography}{9}
+\bibitem{cloud-computing-lecture} \textit{Cloud Computing Lecture 4 - Graph Algorithms with MapReduce}. Jimmy Lin, The iSchool, University of Maryland, February 6, 2008.
+\end{thebibliography}
+\newpage
+\appendix
+\section{Appendix example}
+This an example of appendix
+
+\end{document}

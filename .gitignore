@@ -2,3 +2,7 @@ derby.log
 metastore_db/*
 output/*
 pyspark.sh
+document/*.aux
+document/*.log
+document/*.synctex.gz
+document/*.toc
