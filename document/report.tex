@@ -6,6 +6,13 @@
 \usepackage{advdate}
 \usepackage{graphicx} 
 \usepackage{amsmath} 
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+
+\makeatletter
+\def\BState{\State\hskip-\ALG@thistlm}
+\makeatother
+
 
 \begin{document}
 
@@ -48,18 +55,89 @@ The goal of the project is to find the shortest paths from a source node to all 
 A long side the implementation, a scalability experiments is needed to check the performance of the algorithm implemented.
 
 \section{Dijkstra Algorithm}
-The Dijkstra’s algorithm finds the shortest path from source to all other nodes. Technically the dijkstra algortihm is very similar to the BFS, but instead of having 
+The Dijkstra’s algorithm finds the shortest path from source to all other nodes. The dijkstra algorithm is very similar to the BFS algorithm, the only difference is that the distance between neighbors isn't 1, distance can differ from a neighbor to another.
+
+\newpage
 
 \section{Implementation}
 
 \subsection{Input}
 
 \subsubsection{Data}
+The map task should receive the following infromation
+\begin{itemize}
+\item node
+\item distance
+\item neighbors data that contains the list of neighbors with their respective distance to the node
+\item path
+\end{itemize}
+So let's take the following example with 1 being the start node :
+\begin{figure}[h]
+\centering
+\includegraphics[width=8cm]{img/data-example.png}
+\caption{Example of a graph}
+\end{figure}
+\\
+For the first iteration, the path will be empty. So input data will look like this :
+\begin{itemize}
+\item 1 0 2,10:3,5:
+\item 2 999 3,2:4,1:
+\item 3 999 2,3:4,9:5,2: 
+\item 4 999 5,4:
+\item 5 999 1,7:4,6:
+\end{itemize}
+So as you can see, the start node has a distance of 0, and all other node have a distance of 999 which represent an infinite number. The neighbor list contains each neighbor node with their respective distance, the neighbors and the distance are seperated by a "," and neighbors are seperated by ":".
+
 \subsubsection{Prepare}
+Technically, the format we set for the data is very hard to implement to a large graph. Usually the graph is represented by the distance between nodes. So for the graph provided in the previous page, the input data will look like this 
+\begin{itemize}
+\item 1 2 10
+\item 1 3 5
+\item 2 3 2
+\item 2 4 1
+\item 3 2 3
+\item 3 4 9
+\item 3 5 2
+\item 4 5 4
+\item 5 1 7
+\item 5 4 6
+\end{itemize}
+We created a job MapReduce - called prepare that will format the usual fromat of a graph to the format we are asking for.
 
 \subsection{Mapper}
+A map task receive (K,V)
+\begin{itemize}
+\item Key : node
+\item Value : distance, neighbors data, path
+\end{itemize}
+In the first iteration, the path will be empty. \\
+The map task will : 
+\begin{enumerate}
+\item emit the node with his information (distance, neighbors data and path)
+\item  $\forall$ neighbor $\in$ neighbors, it will emit 
+	\begin{itemize}
+	\item Key : neighbor
+	\item Value : (node distance + distance of node to the neighbor , node path + neighbor).
+	\end{itemize}
+\end{enumerate}
 
-\subsection{Reduce}
+The pseudo code of the mapper is as follow : 
+\begin{algorithm}[h]
+\caption{Mapper}\label{mapper}
+\begin{algorithmic}[1]
+\Procedure{Map \emph{(node, (distance, neighbors, path))} }{}
+\State \textbf{Emit} \emph{(node, (distance, neighbors, path))}
+\State \textbf{for all} \emph{ neighbor $ \in$ neighbors } \textbf{do}
+\State $\textit{ dist} \gets \textit{distance} + \textit{neighbor.distance} $
+\State $ \textit{ p} \gets \textit{path} + \textit{neighbor.id} $
+\State \textbf{ Emit} \emph{(neighbor.id, (dist, p))}
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\newpage
+\subsection{Reducer}
+The reduce will gather the possible distance for each node and selects the minimum one and set the path of the minimum one selected
 
 \subsection{Job Chaining}
 
