@@ -1,4 +1,4 @@
-textFile = sc.textFile("data/input.dat")
+textFile = sc.textFile("bigdata/data/input.dat")
 
 def customSplitNodesTextFile(node):
 	nid, distance, neighbors = node.split(' ')
@@ -41,28 +41,15 @@ def minDistance(nodeValue1, nodeValue2):
 		path = nodeValue2[2]
 	return (distance, neighbors, path)
 
+def formatResult(node):
+	nid = node[0]
+	minDistance = node[1][0]
+	path = node[1][2]
+	return nid, minDistance, path
 
 nodes = textFile.map(lambda node: customSplitNodesTextFile(node));
-#nodes.collect()
-
-nodesValues = nodes.map(lambda x: x[1])
-neighbors = nodesValues.map(
-	lambda nodeData: map(
-		lambda neighbor: customSplitNeighbor(
-			nodeData[2], nodeData[0], neighbor
-		), nodeData[1]
-	)
-).flatMap(lambda x: x)
-#neighbors.collect()
-
-mapper = nodes.union(neighbors)
-#mapper.collect()
-
-reducer = mapper.reduceByKey(lambda x, y: minDistance(x, y))
-reducer.collect()
 
 for i in range(6):
-	nodes = reducer.map(lambda node: customSplitNodesIterative(node));
 	nodesValues = nodes.map(lambda x: x[1])
 	neighbors = nodesValues.map(
 		lambda nodeData: map(
@@ -73,5 +60,6 @@ for i in range(6):
 	).flatMap(lambda x: x)
 	mapper = nodes.union(neighbors)
 	reducer = mapper.reduceByKey(lambda x, y: minDistance(x, y))
+	nodes = reducer.map(lambda node: customSplitNodesIterative(node));
 
-reducer.collect()
+result = reducer.map(lambda node: formatResult(node))
