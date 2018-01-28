@@ -9,6 +9,10 @@ The project has a double purpose. First get familiar with Dijkstra’s algorithm
 Provide both a Python-Hadoop streaming and Spark implementation of the algorithm, and test it on the simple graph data provided in classes.
 Optional: perform scalability experiments as for previous projects. A single comparison on a reasonable big graph would be sufficient
 
+<p align="center">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/5/57/Dijkstra_Animation.gif">
+</p>
+
 ## Formating data
 
 ```sh
