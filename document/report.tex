@@ -15,8 +15,7 @@
 
 
 \begin{document}
-
-\begin{titlepage}
+\[\begin{titlepage}
 \SetDate[30/01/2018]
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 \center 
@@ -55,7 +54,11 @@ The goal of the project is to find the shortest paths from a source node to all 
 A long side the implementation, a scalability experiments is needed to check the performance of the algorithm implemented.
 
 \section{Dijkstra Algorithm}
-The Dijkstra’s algorithm finds the shortest path from source to all other nodes. The dijkstra algorithm is very similar to the BFS algorithm, the only difference is that the distance between neighbors isn't 1, distance can differ from a neighbor to another.
+The Dijkstra’s algorithm finds the shortest path from source to all other nodes. The djikstra algorithm is very similar to the BFS algorithm, the only difference is that the distance between neighbors isn't 1, distance can differ from a neighbor to another.
+
+Let's call the first node we begin with the \textbf{Start Node}, 
+the distance of every other node is set relatively to the \textbf{Start Node}. Djikstra will allocate a certain value (the distance of the node to the \textbf{Start Node}) to every node ( by convention infinity) and then will try to correct them gradually as iterations take place.
+
 
 \newpage
 
@@ -64,7 +67,7 @@ The Dijkstra’s algorithm finds the shortest path from source to all other node
 \subsection{Input}
 
 \subsubsection{Data}
-The map task should receive the following infromation
+The map task should receive the following information
 \begin{itemize}
 \item node
 \item distance
@@ -86,7 +89,7 @@ For the first iteration, the path will be empty. So input data will look like th
 \item 4 999 5,4:
 \item 5 999 1,7:4,6:
 \end{itemize}
-So as you can see, the start node has a distance of 0, and all other node have a distance of 999 which represent an infinite number. The neighbor list contains each neighbor node with their respective distance, the neighbors and the distance are seperated by a "," and neighbors are seperated by ":".
+So as you can see, the start node has a distance of 0, and all other node have a distance of 999 which represent an infinite number. The neighbor list contains each neighbor node with their respective distance, the neighbors and the distance are separated by a "," and neighbors are separated by ":".
 
 \subsubsection{Prepare}
 Technically, the format we set for the data is very hard to implement to a large graph. Usually the graph is represented by the distance between nodes. So for the graph provided in the previous page, the input data will look like this 
@@ -102,7 +105,7 @@ Technically, the format we set for the data is very hard to implement to a large
 \item 5 1 7
 \item 5 4 6
 \end{itemize}
-We created a job MapReduce - called prepare that will format the usual fromat of a graph to the format we are asking for.
+We created a job MapReduce - called prepare that will format the usual format of a graph to the format we are asking for.
 
 \subsection{Mapper}
 A map task receive (K,V)
@@ -164,4 +167,5 @@ It’s not the optimal solution but it can do the job in an “acceptable” amo
 \section{Appendix example}
 This an example of appendix
 
+\]
 \end{document}
