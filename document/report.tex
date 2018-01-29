@@ -8,6 +8,8 @@
 \usepackage{amsmath} 
 \usepackage{algorithm}
 \usepackage[noend]{algpseudocode}
+\usepackage{listings}
+\usepackage{hyperref}
 
 \makeatletter
 \def\BState{\State\hskip-\ALG@thistlm}
@@ -51,7 +53,9 @@ Single-source shortest path - Djikstra Algorithm}\\[0.4cm] \HRule \\[1.5cm]
 \section{Project goal}
 The goal of the project is to find the shortest paths from a source node to all other nodes in the graph using the Dijkstra’s algorithm. The algorithm should be implemented in both Python-Hadoop and Spark. \\
 
-A long side the implementation, a scalability experiments is needed to check the performance of the algorithm implemented.
+A long side the implementation, a scalability experiments is needed to check the performance of the algorithm implemented.\\
+
+You can find source code, data samples, documentation, etc in our repository : \href{ https://github.com/bilal-elchami/bigdata}{github.com/bilal-elchami/bigdata} .
 
 \section{Dijkstra Algorithm}
 The Dijkstra’s algorithm finds the shortest path from source to all other nodes. The djikstra algorithm is very similar to the BFS algorithm, the only difference is that the distance between neighbors isn't 1, distance can differ from a neighbor to another.\\
@@ -102,8 +106,11 @@ Technically, the format we set for the data is very hard to implement to a large
 \item 5 1 7
 \item 5 4 6
 \end{itemize}
-We created a job MapReduce - called prepare that will format the usual format of a graph to the format we are asking for.
+We created a job MapReduce - called prepare that will format the usual format of a graph to the format we are asking for.\\
 
+The prepare algorithm will take in consideration the nodes that dont connect to another node but is a neighbor for another node.
+
+\newpage
 \subsection{Mapper}
 A map task receive (K,V)
 \begin{itemize}
@@ -135,6 +142,7 @@ The pseudo code of the mapper is as follow :
 \end{algorithmic}
 \end{algorithm}
 
+\newpage
 \subsection{Reducer}
 The reducer will gather the possible distance for each node and selects the minimum one and set the path of the minimum one selected.\\
 
@@ -150,9 +158,11 @@ The pseudo code of the reducer is as follow :
 \caption{Reducer}\label{reducer}
 \begin{algorithmic}[1]
 \Procedure{Reducer \emph{(node, [(distance, neighbors, path), (distance, path),...])} }{}
-\State $ \textit{ $d_{min}$} \gets \textit{ $\infty$ } $
-\State $ \textit{ $nodePath     $} \gets \textit{ $\emptyset$ } $
-\State $ \textit{ $graph     $} \gets \textit{ $\emptyset$ }$
+\State $ d_{min} \gets \infty $
+\State $ nodePath \gets \emptyset $
+\State $  graph  \gets \emptyset $ \\
+
+\State $for \quad v \in values $ \\
 
 \If{isNode(v)}
 	\State $ d_{min} \gets  v.distance  $
@@ -171,9 +181,7 @@ The pseudo code of the reducer is as follow :
 \end{algorithmic}
 \end{algorithm}
 
-
-
-
+\newpage
 \subsection{Job Chaining}
 Since Dijkstra algorithm is iterative and we were using python streaming in for the project, we needed to execute several MapReduce steps with overall job scenarios, which means the last reduce output will be used as input for the next map job.\\
 
@@ -185,22 +193,120 @@ The script launches the Hadoop streaming job, merges the output parts into one f
 
 It’s not the optimal solution but it can do the job in an “acceptable” amount of time.\\
 
-\section{Results}
+In spark, we didn't face any problem with the iteration, since we can do it with a simple while or for loop.\\
 
-\subsection{Hadoop}
-
-\subsection{Spark}
-
-\section{Performance}
+The Job Chain script is available on another github repository : \\
+\href{https://github.com/bilal-elchami/hadoop_streaming_job_chaining}{$https://github.com/bilal-elchami/hadoop\_streaming\_job\_chaining$}.
 
 \newpage
+\section{Code description} 
+Source code can be found in the appendices or in the github repository.\\
+\subsection{Hadoop}
+The MapReduce python code was a straight forward implementation of the pseudo code elaborated above. We didn't find any difficulties implementing the algorithm. 
+\subsection{Spark}
+The conception of the script has been adapted according to the Hadoop streaming job. \\
+The loop breaking condition is identified with the help of an accumulator that breaks the loop when the distances at every node no longer change at the next frontier.\\
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=8cm]{img/min-distance.jpeg}
+\caption{Incrementation of the accumulator in min distance function}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=12cm]{img/loop.jpeg}
+\caption{Breaking condition to terminate the algorithm}
+\end{figure}
+
+The accumulator was used as a flag representing if the distance of a node was changed in the “minDistance(nodeValue1, nodeValue2)” function as you can see in the above code
+
+\newpage
+\section{Results}
+
+You can check the execution commands in the README file in the repository.\\
+\subsection{Hadoop}
+When we pass the above graph as input to the Hadoop streaming MapReduce, the output file will contain the following data\\
+$ $\\
+$ 1\quad  0\quad 2,10:3,5:\quad 1$\\
+$ 2 \quad 8\quad 3,2:4,1: \quad1\rightarrow3\rightarrow2$\\	
+$ 3\quad  5 \quad2,3:4,9:5,2: \quad1\rightarrow3$\\	
+$ 4 \quad 9 \quad5,4: \quad 1\rightarrow3\rightarrow2\rightarrow4$\\	
+$ 5 \quad 7 \quad1,7:4,6: \quad1\rightarrow3\rightarrow5$\\
+$ $\\
+And each element in each line represents:
+\begin{itemize}
+\item the current’s node id
+\item the calculated distance from the “Start Node” to the “Current Node”
+\item the neighbors of the “Current Node” with its distance
+\item the shortest path found from the “Start Node” to the “Current Node”
+\end{itemize}
+
+\subsection{Spark}
+The following output represents the spark calculation results. It is the same as the Hadoop output but without the unnecessary neighbors data.\\
+\begin{figure}[h]
+\centering
+\includegraphics[width=11cm]{img/spark.png}
+\caption{Example of a graph}
+\end{figure}
+
+\section{Scalability experiments}
+\subsection{Data}
+We used the Facebook data, that consists of friends list from Facebook. Facebook data has been anonymized by replacing the id of the facebook of each user with a new value.\\
+The graph contains $4039$ nodes and $88234$ edges. \\
+
+The facebook data was downloaded from the Stanford's website :\\  \href{https://snap.stanford.edu/data/egonets-Facebook.html}{https://snap.stanford.edu/data/egonets-Facebook.html}.\\
+
+We created a Map job that adds a random distance (between 1 and 10) for each intersection. The created job is a python script, and can be found under the following folder python/add-distance-graph.py in the repository. \\
+
+After adding random distances, another map job was executed was created to format the data and make it compatible with our MapReduce input (check section 3.1.2).
+ 
+\subsection{Environment}
+We did the experiment on the Dauphine Cluster by using 10 cores for Spark, and 10 reducers for Hadoop Python Streaming.
+
+\subsection{Hadoop}
+The facebook data were executed 100 times on Hadoop Streaming with help of the Job Chain Script. Each iteration took about $7.281$ seconds. The time is acceptable for the following data, but will evantually increase for bigger graph.\\
+
+\newpage
+\subsection{Spark}
+In Spark, the iteration took much more longer than hadoop.
+We faced some scalability issues with bigger graph structures. Those issues can be spotted in the formatting data section which was implemented from a more readable structure. We identified the code that was causing the latency in the exuction :\\
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=11cm]{img/critical.jpeg}
+\caption{Critical code that can be optimized}
+\end{figure}
+
+Unfortunately, it’s not the most optimized way to implement the Dijkstra’s algorithm.
+
+
+\newpage
 \begin{thebibliography}{9}
 \bibitem{cloud-computing-lecture} \textit{Cloud Computing Lecture 4 - Graph Algorithms with MapReduce}. Jimmy Lin, The iSchool, University of Maryland, February 6, 2008.
+\bibitem{github-repo} \textit{Hadoop code from github}. \href{https://github.com/Troll-Mcloving/SistemasDistribuidosAvroHadoop}{https://github.com/Troll-Mcloving/SistemasDistribuidosAvroHadoop}
+\bibitem{wikipedia} \textit{Djikstra Algorithm - wikipedia page}
 \end{thebibliography}
 \newpage
 \appendix
-\section{Appendix example}
-This an example of appendix
+\section{Hadoop - Mapper python code}
+\includegraphics[scale=0.7]{img/hadoop-mapper.png}
+\newpage
+\section{Hadoop - Reducer python code}
+\includegraphics[scale=0.7]{img/hadoop-reducer.png}
+\newpage
+\section{Spark code}
+\includegraphics[scale=0.7]{img/spark-code-1.png}
+$ $\\
+\includegraphics[scale=0.7]{img/spark-code-2.png}
+$ $\\
+\includegraphics[scale=0.7]{img/spark-code-3.png}
+\section{Prepare python code}
+\includegraphics[scale=0.7]{img/hadoop-prepare-1.png}
+$ $\\
+\includegraphics[scale=0.7]{img/hadoop-prepare-2.png}
+\section{Add distance to graph - python code}
+\includegraphics[scale=0.7]{img/hadoop-add-distance-graph.png}
+
 
 \end{document}

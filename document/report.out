@@ -1,0 +1,25 @@
+\BOOKMARK [1][-]{section.1}{Project goal}{}% 1
+\BOOKMARK [1][-]{section.2}{Dijkstra Algorithm}{}% 2
+\BOOKMARK [1][-]{section.3}{Implementation}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{Input}{section.3}% 4
+\BOOKMARK [3][-]{subsubsection.3.1.1}{Data}{subsection.3.1}% 5
+\BOOKMARK [3][-]{subsubsection.3.1.2}{Prepare}{subsection.3.1}% 6
+\BOOKMARK [2][-]{subsection.3.2}{Mapper}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.3}{Reducer}{section.3}% 8
+\BOOKMARK [2][-]{subsection.3.4}{Job Chaining}{section.3}% 9
+\BOOKMARK [1][-]{section.4}{Code description}{}% 10
+\BOOKMARK [2][-]{subsection.4.1}{Hadoop}{section.4}% 11
+\BOOKMARK [2][-]{subsection.4.2}{Spark}{section.4}% 12
+\BOOKMARK [1][-]{section.5}{Results}{}% 13
+\BOOKMARK [2][-]{subsection.5.1}{Hadoop}{section.5}% 14
+\BOOKMARK [2][-]{subsection.5.2}{Spark}{section.5}% 15
+\BOOKMARK [1][-]{section.6}{Scalability experiments}{}% 16
+\BOOKMARK [2][-]{subsection.6.1}{Data}{section.6}% 17
+\BOOKMARK [2][-]{subsection.6.2}{Environment}{section.6}% 18
+\BOOKMARK [2][-]{subsection.6.3}{Hadoop}{section.6}% 19
+\BOOKMARK [2][-]{subsection.6.4}{Spark}{section.6}% 20
+\BOOKMARK [1][-]{appendix.A}{Hadoop - Mapper python code}{}% 21
+\BOOKMARK [1][-]{appendix.B}{Hadoop - Reducer python code}{}% 22
+\BOOKMARK [1][-]{appendix.C}{Spark code}{}% 23
+\BOOKMARK [1][-]{appendix.D}{Prepare python code}{}% 24
+\BOOKMARK [1][-]{appendix.E}{Add distance to graph - python code}{}% 25
