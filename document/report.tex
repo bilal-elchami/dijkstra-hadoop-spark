@@ -54,11 +54,11 @@ The goal of the project is to find the shortest paths from a source node to all 
 A long side the implementation, a scalability experiments is needed to check the performance of the algorithm implemented.
 
 \section{Dijkstra Algorithm}
-The Dijkstra’s algorithm finds the shortest path from source to all other nodes. The djikstra algorithm is very similar to the BFS algorithm, the only difference is that the distance between neighbors isn't 1, distance can differ from a neighbor to another.
+The Dijkstra’s algorithm finds the shortest path from source to all other nodes. The djikstra algorithm is very similar to the BFS algorithm, the only difference is that the distance between neighbors isn't 1, distance can differ from a neighbor to another.\\
 
-Let's call the first node we begin with the \textbf{Start Node}, 
-the distance of every other node is set relatively to the \textbf{Start Node}. Djikstra will allocate a certain value (the distance of the node to the \textbf{Start Node}) to every node ( by convention infinity) and then will try to correct them gradually as iterations take place.
+One of the most common and well-studied problems in graph theory is the single-source shortest path problem or Dijkstra’s algorithm, where the task is to find shortest paths from a source node to all other nodes in the graph (or alternatively, edges can be associated with costs or weights, in which case the task is to compute lowest-cost or lowest-weight paths).This algorithm is very similar to the Breadth-first search algorithm, the only difference is that the distance between neighbors isn't equal to 1 but it can differ from a neighbor to another.\\
 
+However, this algorithm assumes sequential processing. So, the challenge was to solve this problem in parallel, and more specifically, with a MapReduce job. This section will be discussed later in the Mapper/Reducer sections of this document.
 
 \newpage
 \section{Implementation}
@@ -104,7 +104,6 @@ Technically, the format we set for the data is very hard to implement to a large
 \end{itemize}
 We created a job MapReduce - called prepare that will format the usual format of a graph to the format we are asking for.
 
-\newpage
 \subsection{Mapper}
 A map task receive (K,V)
 \begin{itemize}
@@ -136,9 +135,43 @@ The pseudo code of the mapper is as follow :
 \end{algorithmic}
 \end{algorithm}
 
-\newpage
 \subsection{Reducer}
-The reducer will gather the possible distance for each node and selects the minimum one and set the path of the minimum one selected.
+The reducer will gather the possible distance for each node and selects the minimum one and set the path of the minimum one selected.\\
+
+The reducer task will iterate through the nodes generated from the mapper task and for each node it will :
+\begin{enumerate}
+\item identify if the node contain the data structure or just a distance
+\item identify the minimum distance of the node
+\item Emit the minimum distance and the graph structure with the path
+\end{enumerate}
+
+The pseudo code of the reducer is as follow : 
+\begin{algorithm}[h]
+\caption{Reducer}\label{reducer}
+\begin{algorithmic}[1]
+\Procedure{Reducer \emph{(node, [(distance, neighbors, path), (distance, path),...])} }{}
+\State $ \textit{ $d_{min}$} \gets \textit{ $\infty$ } $
+\State $ \textit{ $nodePath     $} \gets \textit{ $\emptyset$ } $
+\State $ \textit{ $graph     $} \gets \textit{ $\emptyset$ }$
+
+\If{isNode(v)}
+	\State $ d_{min} \gets  v.distance  $
+	\State $ nodePath \gets v.path $
+	\State $ graph \gets  v.neighbors $
+\Else{}
+	\If{$d_{min} \leq v.distance$}
+		\State $ d_{min} \gets  v.distance $
+		\State $ nodePath \gets v.path $
+	\EndIf
+\EndIf
+
+\State \textbf{ Emit} \emph{(node, ($d_{min}, graph, nodePath$))}
+
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+
 
 
 \subsection{Job Chaining}
