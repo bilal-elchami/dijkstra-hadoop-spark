@@ -1,4 +1,4 @@
-textFile = sc.textFile("data/facebook_data.dat")
+textFile = sc.textFile("data/input.dat")
 
 count = sc.accumulator(0)
 
