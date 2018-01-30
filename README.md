@@ -1,6 +1,8 @@
-# Big Data's course Project
+﻿# Big Data's course Project
 
 Master en informatique pour la finance - Université Paris-Dauphine
+
+You can find projet report [here](document/report.pdf)
 
 ## Single-source shortest path problem
 
@@ -43,3 +45,7 @@ hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-2.8.1.jar \
 ### Spark
 
 copy code from [this file](spark.py)
+
+### Facebook Data
+
+We used the facebook data for the Scalability experiment. You can download it using this [link](https://snap.stanford.edu/data/egonets-Facebook.html)

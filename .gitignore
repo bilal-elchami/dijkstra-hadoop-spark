@@ -6,4 +6,5 @@ document/*.aux
 document/*.log
 document/*.synctex.gz
 document/*.toc
+document/*.out
 .DS_Store

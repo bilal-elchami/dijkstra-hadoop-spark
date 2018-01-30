@@ -169,7 +169,7 @@ The pseudo code of the reducer is as follow :
 	\State $ nodePath \gets v.path $
 	\State $ graph \gets  v.neighbors $
 \Else{}
-	\If{$ v.distanced_{min} \leq d_{min} $}
+	\If{$ v.distanced_{min} <  d_{min} $}
 		\State $ d_{min} \gets  v.distance $
 		\State $ nodePath \gets v.path $
 	\EndIf
