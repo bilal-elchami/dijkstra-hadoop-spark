@@ -2,7 +2,7 @@
 
 Master en informatique pour la finance - Université Paris-Dauphine
 
-You can find projet report [here](document/report.pdf)
+You can find the projet report [here](document/report.pdf)
 
 ## Single-source shortest path problem
 
@@ -46,6 +46,10 @@ hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-2.8.1.jar \
 
 copy code from [this file](spark.py)
 
-### Facebook Data
+### Scalability experiment
 
 We used the facebook data for the Scalability experiment. You can download it using this [link](https://snap.stanford.edu/data/egonets-Facebook.html)
+
+### Hadoop Streaming Job Chaining
+
+Check this [repository](https://github.com/bilal-elchami/hadoop_streaming_job_chaining) to chain Map Reduce streaming jobs to run it multiples time (iterations).
