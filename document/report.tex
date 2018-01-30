@@ -90,7 +90,7 @@ For the first iteration, the path will be empty. So input data will look like th
 \item 4 999 5,4:
 \item 5 999 1,7:4,6:
 \end{itemize}
-So as you can see, the start node has a distance of 0, and all other node have a distance of 999 which represent an infinite number. The neighbor list contains each neighbor node with their respective distance, the neighbors and the distance are separated by a "," and neighbors are separated by ":".
+So as you can see, the start node has a distance of 0, and all other nodes have a distance of 999 which represent an infinite number. The neighbor list contains each neighbor node with their respective distance, the neighbors and the distance are separated by a "," and neighbors are separated by ":".
 
 \subsubsection{Prepare}
 Technically, the format we set for the data is very hard to implement to a large graph. Usually the graph is represented by the distance between nodes. So for the graph provided in the previous page, the input data will look like this 
@@ -144,7 +144,7 @@ The pseudo code of the mapper is as follow :
 
 \newpage
 \subsection{Reducer}
-The reducer will gather the possible distance for each node and selects the minimum one and set the path of the minimum one selected.\\
+The reducer will gather the possible distance for each node. it selects the minimum distance and gives its associated path .\\
 
 The reducer task will iterate through the nodes generated from the mapper task and for each node it will :
 \begin{enumerate}
@@ -169,7 +169,7 @@ The pseudo code of the reducer is as follow :
 	\State $ nodePath \gets v.path $
 	\State $ graph \gets  v.neighbors $
 \Else{}
-	\If{$d_{min} \leq v.distance$}
+	\If{$ v.distanced_{min} \leq d_{min} $}
 		\State $ d_{min} \gets  v.distance $
 		\State $ nodePath \gets v.path $
 	\EndIf
@@ -183,13 +183,14 @@ The pseudo code of the reducer is as follow :
 
 \newpage
 \subsection{Job Chaining}
-Since Dijkstra algorithm is iterative and we were using python streaming in for the project, we needed to execute several MapReduce steps with overall job scenarios, which means the last reduce output will be used as input for the next map job.\\
+Since Dijkstra algorithm is iterative and we were using Python streaming in for the project, we needed to execute several MapReduce steps with overall job scenarios, which means the last reduce output will be used as input for the next map job.\\
 
 Map1 $\rightarrow$ Reduce1 $\rightarrow$ Map2 $\rightarrow$ Reduce2 $\rightarrow$ Map3... \\
 
-So the simplest way to achieve it was by creating a shell script, that automates what we were doing manually.\\
 
-The script launches the Hadoop streaming job, merges the output parts into one file and then moves it into the data directory so it can be used as input for the next job.\\
+ the simplest way to achieve it was by creating a shell script, that automates what we were doing manually.\\
+
+The script launches the Hadoop Streaming job, merges the output parts into one file and then moves it into the data directory so it can be used as input for the next job.\\
 
 It’s not the optimal solution but it can do the job in an “acceptable” amount of time.\\
 
@@ -252,25 +253,25 @@ The following output represents the spark calculation results. It is the same as
 
 \section{Scalability experiments}
 \subsection{Data}
-We used the Facebook data, that consists of friends list from Facebook. Facebook data has been anonymized by replacing the id of the facebook of each user with a new value.\\
+We used the Facebook data, that consists of friend lists from Facebook. Facebook data has been anonymized by replacing the id of the facebook of each user with a new value.\\
 The graph contains $4039$ nodes and $88234$ edges. \\
 
 The facebook data was downloaded from the Stanford's website :\\  \href{https://snap.stanford.edu/data/egonets-Facebook.html}{https://snap.stanford.edu/data/egonets-Facebook.html}.\\
 
 We created a Map job that adds a random distance (between 1 and 10) for each intersection. The created job is a python script, and can be found under the following folder python/add-distance-graph.py in the repository. \\
 
-After adding random distances, another map job was executed was created to format the data and make it compatible with our MapReduce input (check section 3.1.2).
+After adding random distances, another map job was executed with the aim to format the data and make it compatible with our MapReduce input (check section 3.1.2).
  
 \subsection{Environment}
 We did the experiment on the Dauphine Cluster by using 10 cores for Spark, and 10 reducers for Hadoop Python Streaming.
 
 \subsection{Hadoop}
-The facebook data were executed 100 times on Hadoop Streaming with help of the Job Chain Script. Each iteration took about $7.281$ seconds. The time is acceptable for the following data, but will evantually increase for bigger graph.\\
+The facebook data were executed 100 times on Hadoop Streaming with the help of the Job Chain Script. Each iteration took about $7.281$ seconds. The time is acceptable for the following data, but will evantually increase for bigger graphs.\\
 
 \newpage
 \subsection{Spark}
-In Spark, the iteration took much more longer than hadoop.
-We faced some scalability issues with bigger graph structures. Those issues can be spotted in the formatting data section which was implemented from a more readable structure. We identified the code that was causing the latency in the exuction :\\
+In Spark, the iteration took much more longer than Hadoop.
+We faced some scalability issues with bigger graph structures. Those issues can be spotted in the formatting data section which was implemented from a more readable structure. We identified the code that was causing the latency in the execution :\\
 
 \begin{figure}[h]
 \centering
