@@ -1,21 +1,22 @@
-﻿# Big Data's course Project
+# Dijkstra’s algorithm - Hadoop Python
 
-Master en informatique pour la finance - Université Paris-Dauphine
-
-You can find the projet report [here](document/report.pdf)
+This project was developed during my masters at Paris-Dauphine university. You can find [here](document/report.pdf) the project report.
 
 ## Single-source shortest path problem
 
-The task is to find shortest paths from a source node to all other nodes in the graph. This problem is solved by the Dijkstra’s algorithm, which is sequential.
-The project has a double purpose. First get familiar with Dijkstra’s algorithm, then devise a MapReduce version of the algorithm. As you will realise, the process is actually iterative, so the identified MapReduce job must be iterated a certain number of times.
-Provide both a Python-Hadoop streaming and Spark implementation of the algorithm, and test it on the simple graph data provided in classes.
-Optional: perform scalability experiments as for previous projects. A single comparison on a reasonable big graph would be sufficient
+The purpose of this algorithm is to find shortest path of a source node to all other nodes in a graph. This problem is solved by the Dijkstra’s algorithm.
+This project has double purposes. First, to get familiar with Dijkstra’s algorithm, then implement a MapReduce version of it. The algorithm is iterative, so the identified MapReduce job must be iterated several times to find the final solution.
+We provided a Python-Hadoop streaming and Spark (Python) implementations of the algorithm. 
+
+Optional: perform scalability experiments. A single comparison on a reasonable big graph would be sufficient.
 
 <p align="center">
   <img src="https://upload.wikimedia.org/wikipedia/commons/5/57/Dijkstra_Animation.gif">
 </p>
 
 ## Formating data
+
+This script takes data and convert it to the compatible format of the algorithm. For specific data formats, you can implement your own map job formatter.
 
 ```sh
 cat data/new-data.dat | sort | python/prepare.py 1 >> data/input.dat
@@ -44,12 +45,13 @@ hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-2.8.1.jar \
 
 ### Spark
 
-copy code from [this file](spark.py)
+You can copy the source code in [this file](spark.py) and paste it in pyspark commandline.
+TODO: implement spark submit version.
 
 ### Scalability experiment
 
-We used the facebook data for the Scalability experiment. You can download it using this [link](https://snap.stanford.edu/data/egonets-Facebook.html)
+We used facebook data for the Scalability experiment. You can download it [here](https://snap.stanford.edu/data/egonets-Facebook.html).
 
 ### Hadoop Streaming Job Chaining
 
-Check this [repository](https://github.com/bilal-elchami/hadoop_streaming_job_chaining) to chain Map Reduce streaming jobs to run it multiples time (iterations).
+Check this [repository](https://github.com/bilal-elchami/hadoop_streaming_job_chaining) to chain Map Reduce streaming jobs and run them multiples time (iterations).
